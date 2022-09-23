@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.nines.springboot.lab47.server.autoconfigure.NinesServerAutoConfiguration

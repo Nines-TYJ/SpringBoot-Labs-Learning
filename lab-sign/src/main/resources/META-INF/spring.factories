@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.nines.framework.sign.config.SignAndEncryptInitConfig

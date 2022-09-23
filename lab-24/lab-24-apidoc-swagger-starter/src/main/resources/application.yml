@@ -1,0 +1,11 @@
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+nines:
+  swagger:
+    title: 自动装配测试
+    description: swagger自动装配测试
+    version: 1.0
+    base-package: com.nines.lab24.swagger.controller
+    author: nines

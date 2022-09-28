@@ -1,0 +1,31 @@
+spring:
+  shardingsphere:
+    datasource:
+      # 所有数据源的名字
+      names: ds-orders, ds-users
+      # 订单 orders 数据源配置
+      ds-orders:
+        # 使用 Hikari 数据库连接池
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/test_orders?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+        username: root
+        password: root
+      # 订单 users 数据源配置
+      ds-users:
+        # 使用 Hikari 数据库连接池
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/test_users?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+        username: root
+        password: root
+    sharding:
+      tables:
+        # orders 表配置
+        orders:
+          # 映射到 ds-orders 数据源的 orders 表
+          actualDataNodes: ds-orders.orders
+        # users 表配置
+        users:
+          # 映射到 ds-users 数据源的 users 表
+          actualDataNodes: ds-users.users

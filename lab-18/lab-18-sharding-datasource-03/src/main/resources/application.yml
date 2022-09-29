@@ -1,0 +1,95 @@
+spring:
+  # ShardingSphere 配置项
+  shardingsphere:
+    datasource:
+      names: ds-master-0, ds-master-1, ds-slave-0, ds-slave-1, ds-slave
+      ds-master-0:
+        # 使用 Hikari 数据库连接池
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/lab18_orders_0?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+        username: root
+        password: root
+      ds-master-1:
+        # 使用 Hikari 数据库连接池
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/lab18_orders_1?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+        username: root
+        password: root
+      ds-slave-0:
+        # 使用 Hikari 数据库连接池
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/test_orders_01?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+        username: root
+        password: root
+      ds-slave-1:
+        # 使用 Hikari 数据库连接池
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/test_orders_02?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+        username: root
+        password: root
+      ds-slave:
+        # 使用 Hikari 数据库连接池
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/test_orders?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+        username: root
+        password: root
+
+    # 分片规则
+    sharding:
+      # 读写分离配置，对应 YamlMasterSlaveRuleConfiguration 配置类
+      master-slave-rules:
+        # 此处必须为  shardingsphere.names中列举的数据源
+        ds-master-0:
+          # 主库数据源
+          master-data-source-name: ds-master-0
+          # 从库数据源
+          slave-data-source-names: ds-slave-0, ds-slave
+          # 负载均衡 轮询
+          load-balance-algorithm-type: round_robin
+        # 此处必须为  shardingsphere.names中列举的数据源
+        ds-master-1:
+          # 主库数据源
+          master-data-source-name: ds-master-1
+          # 从库数据源
+          slave-data-source-names: ds-slave-1, ds-slave
+          # 负载均衡 轮询
+          load-balance-algorithm-type: round_robin
+
+      tables:
+        # orders 表配置
+        orders:
+          # 映射到 ds-master-0 和 ds-master-1 数据源的 master 表们
+          actualDataNodes: ds-master-0.orders_$->{[0,2,4,6]}, ds-master-1.orders_$->{[1,3,5,7]}
+          # 主键生成策略
+          key-generator:
+            column: id
+            type: SNOWFLAKE
+          # 分库策略
+          database-strategy:
+            inline:
+              # 算法表达式 模2
+              algorithm-expression: ds-master-$->{user_id % 2}
+              # 字段
+              sharding-column: user_id
+          # 分表策略
+          table-strategy:
+            inline:
+              # 算法表达式 模8
+              algorithm-expression: orders_$->{user_id % 8}
+              # 字段
+              sharding-column: user_id
+        # order_config 表配置
+        order_config:
+          # 仅映射到 ds-orders-0 数据源的 order_config 表
+          actualDataNodes: ds-master-0.order_config
+    # 拓展属性配置
+    props:
+      # 打印 SQL
+      sql:
+        show: true
+#        simple: true

@@ -18,6 +18,7 @@
         <module>lab-25</module>
         <module>lab-17</module>
         <module>lab-18</module>
+        <module>lab-screw</module>
     </modules>
 
     <properties>

@@ -21,6 +21,7 @@
         <module>lab-screw</module>
         <module>lab-generator</module>
         <module>lab-15</module>
+        <module>lab-21</module>
     </modules>
 
     <properties>

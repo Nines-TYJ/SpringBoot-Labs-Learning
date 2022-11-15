@@ -15,7 +15,6 @@ public class OrderConfigDO {
     private Integer id;
     /**
      * 支付超时时间
-     *
      * 单位：分钟
      */
     private Integer payTimeout;

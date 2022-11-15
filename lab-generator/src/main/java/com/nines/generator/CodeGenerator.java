@@ -22,10 +22,10 @@ public class CodeGenerator {
 
     public static void main(String[] args) {
         FastAutoGenerator.create(
-                "jdbc:mysql://127.0.0.1:3306/test_users?useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useLegacyDatetimeCode=false&zeroDateTimeBehavior=convertToNull",
-                "root",
-                "root"
-        )
+                        "jdbc:mysql://127.0.0.1:3306/test_users?useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useLegacyDatetimeCode=false&zeroDateTimeBehavior=convertToNull",
+                        "root",
+                        "root"
+                )
                 // 全局配置
                 .globalConfig((scanner, builder) ->
                         builder
